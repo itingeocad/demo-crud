@@ -1,0 +1,2 @@
+# Demo‑CRUD
+Initial skeleton.

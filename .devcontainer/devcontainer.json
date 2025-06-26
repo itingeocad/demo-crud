@@ -1,0 +1,9 @@
+{
+  "name": "demo-crud-dev",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bullseye",
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/pnpm:2": "latest"
+  },
+  "postCreateCommand": "pip install -r requirements.txt && pnpm install",
+  "forwardPorts": [8000]
+}
