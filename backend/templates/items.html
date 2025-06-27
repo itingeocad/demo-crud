@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="utf-8"><title>Items demo</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/2/dt.min.css">
+</head>
+<body>
+<h1>Items</h1>
+
+<form id="addForm">
+  <input name="title" placeholder="Title" required>
+  <input name="description" placeholder="Description">
+  <button>Add</button>
+</form>
+
+<table id="tbl" class="display" style="width:100%">
+  <thead><tr><th>ID</th><th>Title</th><th>Description</th><th></th></tr></thead>
+</table>
+
+<script src="https://cdn.datatables.net/2/dt.min.js"></script>
+<script>
+const api='/api/items';
+const table=new DataTable('#tbl',{
+  ajax:{url:api,dataSrc:''},
+  columns:[
+    {data:'id'},{data:'title'},{data:'description'},
+    {data:null,render:r=>`<button data-id="${r.id}">×</button>`,orderable:false}
+  ]
+});
+document.getElementById('addForm').onsubmit=async e=>{
+  e.preventDefault();
+  const data=Object.fromEntries(new FormData(e.target));
+  await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  table.ajax.reload();e.target.reset();
+};
+document.querySelector('#tbl').addEventListener('click',async e=>{
+  if(e.target.tagName==='BUTTON'){
+    await fetch(`${api}/${e.target.dataset.id}`,{method:'DELETE'});
+    table.ajax.reload();
+  }
+});
+</script>
+</body></html>

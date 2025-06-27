@@ -9,7 +9,7 @@ services:
       POSTGRES_DB: demo
     volumes: [db_data:/var/lib/postgresql/data]
     healthcheck:
-      test: ["CMD","pg_isready","-U","demo"]
+      test: ["CMD", "pg_isready", "-U", "demo"]
       interval: 5s
       retries: 5
     ports: ["5432:5432"]
@@ -20,19 +20,17 @@ services:
       DATABASE_URL: postgresql://demo:demo@db:5432/demo
       FLASK_ENV: development
     volumes:
-      - .:/app
+      - .:/app          # live-reload кода
     depends_on:
       db:
         condition: service_healthy
     ports: ["8000:8000"]
     command:
-      - gunicorn
-      - -k
-      - gevent
-      - -b
-      - 0.0.0.0:8000
-      - backend.app:create_app()
-      - --reload
+      - flask
+      - --app
+      - backend.app:create_app
+      - run
+      - --host=0.0.0.0
 
 volumes:
   db_data:

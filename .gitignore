@@ -17,4 +17,4 @@ Thumbs.db
 
 # Secrets
 .env
-sp.key
+sp.key*.db
